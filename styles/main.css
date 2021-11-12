@@ -1,0 +1,36 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-container {
+  height: 750px;
+  width: 1500px;
+  border: 1px solid black;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.game-container > div {
+  margin: 0;
+  height: 5%;
+  width: 5%;  
+  border: 1px solid blue;
+}
+
+.player {
+  background-color: tomato;
+}
+
+.aliens {
+  background-color: pink;
+}
+
+.green {
+  background-color: green;
+}
