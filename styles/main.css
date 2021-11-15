@@ -2,25 +2,50 @@
   box-sizing: border-box;
 }
 body {
-  height: 100vh;
+background-color: white;
+}
+
+.header-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+.central-wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center; 
+  border: 1px solid rgb(177, 45, 45);
+}
+
+.instructions {
+  border: 1px solid green;
+  height: 750px;
+  width: 250px;
+}
+
+.options {
+  border: 1px solid blue;
+  width: 250px;
+  height: 750px;
 }
 
 .game-container {
   height: 750px;
-  width: 1500px;
-  border: 1px solid black;
+  width: 750px;
   display: flex;
   flex-wrap: wrap;
+  border: 1px solid black;
 }
 
 .game-container > div {
   margin: 0;
   height: 5%;
   width: 5%;  
-  border: 1px solid blue;
 }
 
 .player {
@@ -28,9 +53,27 @@ body {
 }
 
 .aliens {
-  background-color: pink;
+  background: url('https://mpng.subpng.com/20190627/ttx/kisspng-javascript-computer-icons-scalable-vector-graphics-list-of-javascript-enhancements-fandom-developers-5d145895b06253.7824611015616144857225.jpg');
+  background-size: cover;
 }
 
-.green {
-  background-color: green;
+.laser {
+  background-size: cover;
+  background-image: url('https://www.pinclipart.com/picdir/middle/340-3403919_download-free-png-image-rubber-duck-png-clipart.png');
+}
+
+.barrier {
+
+}
+
+.barrier-bottom {
+  
+}
+
+.bomb {
+  background-color: purple;
+}
+
+.mothership {
+  background-color: pink;
 }
