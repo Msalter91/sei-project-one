@@ -58,7 +58,7 @@ h3 {
 
 .game-container {
   height: 800px;
-  width: 1000px;
+  width: 1500px;
   display: flex;
   flex-wrap: wrap;
   border: 1px solid black;
@@ -69,28 +69,34 @@ h3 {
 .game-container > div {
   margin: 0;
   height: 5%;
-  width: 5%;  
+  width: 5%; 
+  border: 5px solid white 
 }
 
-.player {
-  background-image: url(/assets/Left_Sprite.png);
+.game-container .player {
+  background-image: url(/assets/panic_sprite.gif);
   background-size: contain;
   background-repeat: no-repeat;
-  transition: 1s ease-in-out;
+  border: none;
+}
+
+.left {
+  transform: scaleX(-1); 
 }
 
 .right {
-  background-image: url(/assets/right_sprite.png);
+  background-image: url(/assets/panic_sprite.gif);
+  transform: scaleX(-1);
 }
 
 .aliens {
-  background-image: url(/assets/html_logo.png);
+  background-image: url(/assets/javascript.png);
   background-size: contain;
   background-repeat: no-repeat;
 
 }
 
-.aliensjs {
+/* .aliensjs {
   background-image: url(/assets/javascript.png);
 }
 
@@ -100,7 +106,7 @@ h3 {
 
 .alienscss {
   background-image: url(/assets/css_logo.png);
-}
+} */
 
 .laser {
   background-size: contain;
@@ -166,6 +172,51 @@ h3 {
 }
 
 .continue:hover {
+  transform: scale(1.2);
+  transition: 3s ease;
+}
+
+.level-up {
+  display: none;
+  height: 500px;
+  width: 750px;
+  background-color: grey;
+  position: absolute;
+  box-shadow: 10px 10px 5px black;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.level-up button {
+  width: 200px;
+  height: 75px;
+  border: none;
+  border-radius: 15px;
+  font-size: 40px;
+  color: white;
+}
+
+.level-indicator {
+  font-family: 'Russo One', sans-serif;
+  font-size: 50px;
+  color: white;
+  text-align: center;
+  margin: 20px;
+}
+
+.level-up button {
+  width: 200px;
+  height: 75px;
+  border: none;
+  border-radius: 15px;
+  font-size: 40px;
+  color: white;
+}
+.next-level {
+  background-color: green;
+}
+
+.next-level:hover {
   transform: scale(1.2);
   transition: 3s ease;
 }

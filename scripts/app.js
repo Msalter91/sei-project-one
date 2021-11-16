@@ -5,6 +5,11 @@ const scoreSpan = document.querySelector('.score')
 const livesLeft = document.querySelector('.lives')
 const gameOverSplash = document.querySelector('.game-over')
 const playAgain = document.querySelector('.continue')
+const levelUpBox = document.querySelector('.level-up')
+const levelUpPara = document.querySelector('.level-indicator')
+const nextLevelButton = document.querySelector('.next-level')
+const showLevel = document.querySelector('.level-now')
+const audioElement = document.querySelector('audio')
 
 // Grid Variables 
 const cells = []
@@ -19,6 +24,7 @@ let countLeft = 0
 let gameTimer = null
 let alienBombTimer = null
 let mothershipGenerationId = null
+let laserMovementId = null
 
 //Position Arrays 
 let alienPositions = []
@@ -36,8 +42,9 @@ let isPlaying = false
 let playerLives = 3
 let level = 1
 let baseSpeed = 200
+let alienBombSpeed = 2000
+let mothershipSpeed = 15000
 
-// Game Variables 
 
 // Game Functions
 
@@ -51,7 +58,7 @@ function generateMothership () {
   mothershipGenerationId = setInterval(() => {
     mothershipPosition = gridWidth
     moveMothership()
-  }, 15000)
+  }, mothershipSpeed)
 }
 
 function moveMothership () {
@@ -82,21 +89,43 @@ function reset () {
     cell.classList.remove('bomb')
   })
   alienPositions = []
+  laserPosition = []
   generateFirstAliens()
   generateSecondAliens()
   generateThirdAliens()
   playerLives = 3
   countLeft = 0
   countRight = 0
+  score = 0
+  level = 1
 } 
 
-function winCondition () {
-  if (alienPositions.length === 0) {
-    window.alert('Player Wins')
-  }
+function playNextLevel () {
+  levelUpBox.style.display = 'none'
+  startBtn.style.visibility = 'visible'
+  cells.forEach(cell => {
+    cell.classList.remove('aliens')
+  })
+  cells.forEach(cell => {
+    cell.classList.remove('mothership')
+  })
+  cells.forEach(cell => {
+    cell.classList.remove('bomb')
+  })
+  cells.forEach(cell => {
+    cell.classList.remove('laser')
+  })
+  alienPositions = []
+  laserPosition = []
+  generateFirstAliens()
+  generateSecondAliens()
+  generateThirdAliens()
+  countLeft = 0
+  countRight = 0
+  startBtn.innerHTML = `Start Level ${level}`
 }
 
-// Game Generation Creation
+// Game Set-up Functions 
 
 function createGrid() {
   for (let i = 0; i < cellCount; i++) {
@@ -143,11 +172,9 @@ function generateBottomBarrier () {
 }
 
 function determineSpeed () {
-  if (level === 2) {
-    baseSpeed = 150
-  } else if (level === 3) {
-    baseSpeed = 125
-  } else baseSpeed = 200
+  baseSpeed = 200 - (level * 10)
+  alienBombSpeed = 2000 - (level * 50)
+  mothershipSpeed = 15000 - (level * 700)
 }
 
 // Alien Movement
@@ -227,7 +254,7 @@ function alienBombs () {
     const randomAlien = alienPositions[Math.floor(Math.random() * alienPositions.length)]
     bombPosition.push(randomAlien)
     cells[randomAlien].classList.add('bomb')
-  }, 2000)
+  }, alienBombSpeed)
 }
 
 function alienBombMovement () {
@@ -256,7 +283,7 @@ function generateBomb() {
 }
 
 
-// Player Actions
+// Player Movments 
 
 function playerMovement (e){
   if (e.code === 'ArrowRight') {
@@ -304,7 +331,6 @@ function shoot() {
   generateLaser()
 } 
 
-
 function moveLaserUp () {
   laserPosition = laserPosition.map(laser => {
     if (laser < (gridWidth - 1)) {
@@ -328,15 +354,35 @@ function generateLaser() {
   })
 }
 
+function laserMovement () {
+  removeLaser()
+  moveLaserUp()
+  generateLaser()
+}
+
+function winCondition () {
+  if (alienPositions.length === 0) {
+    clearInterval(gameTimer)
+    clearInterval(timerId)
+    clearInterval(alienBombTimer)
+    clearInterval(mothershipId)
+    clearInterval(mothershipGenerationId)
+    clearInterval(laserMovementId)
+    levelUpBox.style.display = 'flex'
+    levelUpPara.innerHTML = `Congratulations you have beaten level ${level}.`
+    level = level + 1
+  }
+}
+
 function gameOver () {
   clearInterval(gameTimer)
   clearInterval(timerId)
   clearInterval(alienBombTimer)
   clearInterval(mothershipId)
   clearInterval(mothershipGenerationId)
+  clearInterval(laserMovementId)
   gameOverSplash.style.display = 'flex'
 }
-
 
 function gamePlay () {
   startBtn.style.visibility = 'hidden'
@@ -345,6 +391,9 @@ function gamePlay () {
   startAlienMovementRight()
   alienBombs()
   generateMothership()
+  laserMovementId = setInterval(() => {
+    laserMovement()
+  }, 300)
   gameTimer = setInterval(() => {
     checkHit()
     alienBombMovement()
@@ -352,15 +401,8 @@ function gamePlay () {
     winCondition()
     checkLoss()
   }, 100)
-}
-
-
-
-
-function laserMovement () {
-  removeLaser()
-  moveLaserUp()
-  generateLaser()
+  audioElement.currentTime = 80
+  audioElement.play()
 }
 
 // Collision Checks 
@@ -434,7 +476,7 @@ function checkLoss () {
   })
 }
 
-
+// Functions to run at start up
 createGrid()
 generatePLayer()
 generateFirstAliens()
@@ -442,14 +484,14 @@ generateSecondAliens()
 generateThirdAliens()
 generateTopBarrier()
 generateBottomBarrier()
-setInterval(() => {
-  laserMovement()
-}, 300)
+showLevel.innerHTML = `${level}`
 
 
-// Events
+
+// Event listener
 
 document.addEventListener('keydown', playerMovement)
 document.addEventListener('keyup', shooting)
 startBtn.addEventListener('click', gamePlay)
 playAgain.addEventListener('click', reset)
+nextLevelButton.addEventListener('click', playNextLevel)
