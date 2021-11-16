@@ -2,44 +2,68 @@
   box-sizing: border-box;
 }
 body {
-background-color: white;
+background-color: #fcc93c;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 .header-wrapper {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+
+button {
+  align-self: flex-end;
+  margin-right: 200px;
 }
 
 h1 {
+  font-family: 'Russo One', sans-serif;
   font-size: 40px;
+  color: #f56022;
+  text-shadow: 5px 5px #558ABB;
 }
 
 .central-wrapper {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center; 
-  border: 1px solid rgb(177, 45, 45);
 }
 
 .instructions {
-  border: 1px solid green;
+  border: 1px solid black;
   height: 750px;
   width: 250px;
+  text-align: center;
+  padding: 10px;
+  box-shadow: 10px 10px 5px black;
+  margin-right: 50px;
+}
+
+h3 {
+  font-family: 'Russo One', sans-serif; 
 }
 
 .options {
-  border: 1px solid blue;
+  border: 1px solid black;
   width: 250px;
   height: 750px;
+  box-shadow: 10px 10px 5px black;
 }
 
 .game-container {
-  height: 750px;
-  width: 750px;
+  height: 800px;
+  width: 1000px;
   display: flex;
   flex-wrap: wrap;
   border: 1px solid black;
+  background: white;
+  box-shadow: 10px 10px 5px black;
 }
 
 .game-container > div {
@@ -49,31 +73,99 @@ h1 {
 }
 
 .player {
-  background-color: tomato;
+  background-image: url(/assets/Left_Sprite.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: 1s ease-in-out;
+}
+
+.right {
+  background-image: url(/assets/right_sprite.png);
 }
 
 .aliens {
-  background: url('https://mpng.subpng.com/20190627/ttx/kisspng-javascript-computer-icons-scalable-vector-graphics-list-of-javascript-enhancements-fandom-developers-5d145895b06253.7824611015616144857225.jpg');
-  background-size: cover;
+  background-image: url(/assets/html_logo.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+
+}
+
+.aliensjs {
+  background-image: url(/assets/javascript.png);
+}
+
+.alienshtml {
+  background-image: url(/assets/html_logo.png);
+}
+
+.alienscss {
+  background-image: url(/assets/css_logo.png);
 }
 
 .laser {
-  background-size: cover;
-  background-image: url('https://www.pinclipart.com/picdir/middle/340-3403919_download-free-png-image-rubber-duck-png-clipart.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url(/assets/duck_laser.png);
 }
 
 .barrier {
-
-}
-
-.barrier-bottom {
   
 }
 
+.barrier-bottom {
+
+}
+
 .bomb {
-  background-color: purple;
+  background-image: url(/assets/pngegg.png);
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .mothership {
-  background-color: pink;
+  background: url(/assets/mothership.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.game-over {
+  display: none;
+  height: 500px;
+  width: 750px;
+  background-color: red;
+  position: absolute;
+  box-shadow: 10px 10px 5px black;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.game-over p {
+  font-family: 'Russo One', sans-serif;
+  font-size: 150px;
+  color: white;
+  text-align: center;
+  margin: 0px;
+}
+
+.game-over button {
+  width: 200px;
+  height: 75px;
+  border: none;
+  border-radius: 15px;
+  font-size: 40px;
+  color: white;
+}
+
+.continue {
+  background-color: green;
+}
+
+.give-up {
+  background-color: darkred;
+}
+
+.continue:hover {
+  transform: scale(1.2);
+  transition: 3s ease;
 }

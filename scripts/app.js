@@ -2,28 +2,40 @@
 const container = document.querySelector('.game-container')
 const startBtn = document.querySelector('.start')
 const scoreSpan = document.querySelector('.score')
+const livesLeft = document.querySelector('.lives')
+const gameOverSplash = document.querySelector('.game-over')
+const playAgain = document.querySelector('.continue')
 
 // Grid Variables 
 const cells = []
 const gridWidth = 20
 const cellCount = gridWidth * gridWidth
 
-let playerPosition = null
-let alienPositions = []
-let bombPosition = []
-// const playerX = playerPosition % gridWidth
+//Timing variables
 let timerId = null
+let mothershipId = null
 let countRight = 0
 let countLeft = 0
+let gameTimer = null
+let alienBombTimer = null
+let mothershipGenerationId = null
 
-
-let laser = null
+//Position Arrays 
+let alienPositions = []
+let bombPosition = []
 let laserPosition = []
-let mothershipPosition = null 
-let mothershipId = null
 
+// Single-Object Positions 
+let mothershipPosition = null 
+let playerPosition = null
+let laser = null
+
+//Game Variables
 let score = 0
 let isPlaying = false
+let playerLives = 3
+let level = 1
+let baseSpeed = 200
 
 // Game Variables 
 
@@ -36,8 +48,8 @@ function generateAlien() {
 }
 
 function generateMothership () {
-  setInterval(() => {
-    mothershipPosition = 20
+  mothershipGenerationId = setInterval(() => {
+    mothershipPosition = gridWidth
     moveMothership()
   }, 15000)
 }
@@ -54,6 +66,30 @@ function moveMothership () {
   }, 500)
 }
 
+function reset () {
+  gameOverSplash.style.display = 'none'
+  startBtn.style.visibility = 'visible'
+  cells.forEach(cell => {
+    cell.classList.remove('aliens')
+  })
+  cells.forEach(cell => {
+    cell.classList.remove('laser')
+  })
+  cells.forEach(cell => {
+    cell.classList.remove('mothership')
+  })
+  cells.forEach(cell => {
+    cell.classList.remove('bomb')
+  })
+  alienPositions = []
+  generateFirstAliens()
+  generateSecondAliens()
+  generateThirdAliens()
+  playerLives = 3
+  countLeft = 0
+  countRight = 0
+} 
+
 function winCondition () {
   if (alienPositions.length === 0) {
     window.alert('Player Wins')
@@ -66,7 +102,6 @@ function createGrid() {
   for (let i = 0; i < cellCount; i++) {
     const cell = document.createElement('div')
     container.appendChild(cell)
-    cell.innerHTML = i
     cells.push(cell)
   }
 }
@@ -105,6 +140,14 @@ function generateBottomBarrier () {
   for (let i = (gridWidth * gridWidth) - 1; i >= (gridWidth * gridWidth) - gridWidth; i--) {
     cells[i].classList.add('barrier-bottom')
   }  
+}
+
+function determineSpeed () {
+  if (level === 2) {
+    baseSpeed = 150
+  } else if (level === 3) {
+    baseSpeed = 125
+  } else baseSpeed = 200
 }
 
 // Alien Movement
@@ -151,7 +194,6 @@ function moveAlienDown() {
 }
 
 function startAlienMovementRight () {
-  // isPlaying = true
   timerId = setInterval(() => {
     countRight++
     if (countRight === (gridWidth - 10)) {
@@ -162,7 +204,7 @@ function startAlienMovementRight () {
     } else {
       moveAlienRight()
     }
-  }, 200)
+  }, baseSpeed)
 }
 function startAlienMovementLeft () {
   timerId = setInterval(() => {
@@ -175,17 +217,17 @@ function startAlienMovementLeft () {
     } else {
       moveAlienLeft()
     }
-  }, 200)
+  }, baseSpeed)
 }
 
 //Bomb Functions
 
 function alienBombs () { 
-  setInterval(() => {
+  alienBombTimer = setInterval(() => {
     const randomAlien = alienPositions[Math.floor(Math.random() * alienPositions.length)]
     bombPosition.push(randomAlien)
     cells[randomAlien].classList.add('bomb')
-  }, 5000)
+  }, 2000)
 }
 
 function alienBombMovement () {
@@ -230,6 +272,7 @@ function playerMovement (e){
 }
 
 function moveLeft () {
+  cells[playerPosition].classList.remove('right')
   cells[playerPosition].classList.remove('player')
   playerPosition -- 
   cells[playerPosition].classList.add('player')
@@ -237,8 +280,10 @@ function moveLeft () {
 
 function moveRight () {
   cells[playerPosition].classList.remove('player')
+  cells[playerPosition].classList.remove('right')
   playerPosition ++ 
   cells[playerPosition].classList.add('player')
+  cells[playerPosition].classList.add('right')
 }
 
 // Shooting
@@ -283,18 +328,29 @@ function generateLaser() {
   })
 }
 
+function gameOver () {
+  clearInterval(gameTimer)
+  clearInterval(timerId)
+  clearInterval(alienBombTimer)
+  clearInterval(mothershipId)
+  clearInterval(mothershipGenerationId)
+  gameOverSplash.style.display = 'flex'
+}
+
 
 function gamePlay () {
   startBtn.style.visibility = 'hidden'
   isPlaying = true
+  determineSpeed()
   startAlienMovementRight()
   alienBombs()
   generateMothership()
-  setInterval(() => {
+  gameTimer = setInterval(() => {
     checkHit()
     alienBombMovement()
     checkBombHit()
     winCondition()
+    checkLoss()
   }, 100)
 }
 
@@ -354,18 +410,29 @@ function checkBombHit() {
       const bombToRemove = bombPosition.indexOf(bomb)
       bombPosition.splice(bombToRemove, 1) 
 
+      playerLives -= 1
+      livesLeft.innerHTML = playerLives
+
     } else if (cells[bomb].classList.contains('barrier-bottom')) {
 
       const bombToRemove = bombPosition.indexOf(bomb)
       bombPosition.splice(bombToRemove, 1)  
-      cells[bomb].classList.remove('bomb')
-      
+      cells[bomb].classList.remove('bomb') 
     } else {
       return
     }
   })
 }
 
+function checkLoss () {
+  alienPositions.forEach(alien => {
+    if (cells[alien].classList.contains('barrier-bottom')) {
+      gameOver()
+    } else if (playerLives === 0) {
+      gameOver()
+    }
+  })
+}
 
 
 createGrid()
@@ -385,3 +452,4 @@ setInterval(() => {
 document.addEventListener('keydown', playerMovement)
 document.addEventListener('keyup', shooting)
 startBtn.addEventListener('click', gamePlay)
+playAgain.addEventListener('click', reset)
