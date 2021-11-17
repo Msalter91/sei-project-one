@@ -1,13 +1,34 @@
 # Project 1
 
+## Overview
+
+This is the first project I made as part of my General Assembly Software Engineering Immersive Course. 
+
 ### The Brief 
 
-The brief was simple; using only vanilla Javascript I was tasked to make a Space Invaders style game in a week. 
-The player had to be able to clear at least one level of aliens, and the score had to be visible to the player. 
+The brief was simple; using only vanilla Javascript, HTML and CSS, to create a grid based space invaders game. 
+The point of the game was to use array manipulation to create movement and a playable, enjoyable game. 
+
+The player had to be able to do the following at a minimum:
+
+<ul>
+  <li>The player had to be able to clear at least one wave of aliens</li>
+  <li> The player's score have to visibile at the end of the game</li>
+</ul>
+
+We were encourage to add some enhacements to the game and so I decided to add the following: 
+
+<ul>
+  <li>Levels</li>
+  <li>Motherships</li>
+  <li>Stormtrooper mode</li>
+  <li>A locally cached hi-score</li>
+  <li>Cheat codes</li>
 
 ### The Theme
 
 The idea behind the theme is the very task itself. 
+
 Going into my GA course, I had no programming experience. A good friend of mine introduced me to the concept of rubberduck debugging. Talking to an innanimate quacker helped me work through a lot of early code bugs. So, armed only with my trusty yellow, semi-aquatic companion, I rode into battle against my own code. Slaying bugs one by one and completeing the challenge. Instead of lasers, the player fires sunglass-clad rubber ducks, and must defeat hords of Javascript aliens which drop bugs towards the players. 
 
 ## Generating the Game Objects

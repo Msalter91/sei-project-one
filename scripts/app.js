@@ -20,7 +20,6 @@ const musicExplainer = document.querySelector('.music-explainer')
 const sfxExplainer = document.querySelector('.sfx-explainer')
 const stormTrooperExplainer = document.querySelector('.stormtrooper-explainer')
 
-
 // Grid Variables 
 const cells = []
 const gridWidth = 20
@@ -88,58 +87,34 @@ function moveMothership () {
 
 // Renewing the game
 
-function reset () {
-  gameOverSplash.style.display = 'none'
-  startBtn.style.visibility = 'visible'
+function clearBoard() {
   cells.forEach(cell => {
-    cell.classList.remove('aliens')
-  })
-  cells.forEach(cell => {
-    cell.classList.remove('laser')
-  })
-  cells.forEach(cell => {
-    cell.classList.remove('mothership')
-  })
-  cells.forEach(cell => {
-    cell.classList.remove('bomb')
+    cell.classList.remove('aliens', 'laser', 'mothership', 'bomb')
   })
   alienPositions = []
   laserPosition = []
+  startBtn.style.visibility = 'visible'
+  countLeft = 0
+  countRight = 0
+  startBtn.innerHTML = `Start Level ${level}`
+  hiScoreSpan.innerHTML = hiScore
   generateFirstAliens()
   generateSecondAliens()
   generateThirdAliens()
+}
+
+function reset () {
+  gameOverSplash.style.display = 'none'
+  clearBoard()
   playerLives = 3
-  countLeft = 0
-  countRight = 0
   score = 0
   scoreSpan.innerHTML = `${score}`
   level = 1
-  startBtn.innerHTML = `Start Level ${level}`
-  hiScoreSpan.innerHTML = hiScore
 } 
 
 function playNextLevel () {
   levelUpBox.style.display = 'none'
-  startBtn.style.visibility = 'visible'
-  cells.forEach(cell => {
-    cell.classList.remove('aliens')
-  })
-  cells.forEach(cell => {
-    cell.classList.remove('mothership')
-  })
-  cells.forEach(cell => {
-    cell.classList.remove('bomb')
-  })
-  cells.forEach(cell => {
-    cell.classList.remove('laser')
-  })
-  alienPositions = []
-  laserPosition = []
-  generateFirstAliens()
-  generateSecondAliens()
-  generateThirdAliens()
-  countLeft = 0
-  countRight = 0
+  clearBoard()
   startBtn.innerHTML = `Start Level ${level}`
   hiScoreSpan.innerHTML = hiScore
 }
@@ -198,11 +173,15 @@ function determineSpeed () {
 
 // Alien Movement
 
-function moveAlienRight () {
+function moveAlienClases() {
   alienPositions.forEach(alienPosition => {
     cells[alienPosition].classList.add('aliens')
     cells[alienPosition].classList.remove('aliens')
   })
+}
+
+function moveAlienRight () {
+  moveAlienClases()
   const aliensRight = alienPositions.map(alienPosition => {
     alienPosition ++
     return alienPosition
@@ -212,11 +191,7 @@ function moveAlienRight () {
 }
 
 function moveAlienLeft () {
-  alienPositions.forEach(alienPosition => {
-    cells[alienPosition].classList.add('aliens')
-    cells[alienPosition].classList.remove('aliens')
-  })
-
+  moveAlienClases()
   const aliensLeft = alienPositions.map(alienPosition => {
     alienPosition --
     return alienPosition
@@ -226,11 +201,7 @@ function moveAlienLeft () {
 }
 
 function moveAlienDown() {
-  alienPositions.forEach(alienPosition => {
-    cells[alienPosition].classList.add('aliens')
-    cells[alienPosition].classList.remove('aliens')
-  })
-
+  moveAlienClases()
   const aliensDown = alienPositions.map(alienPosition => {
     alienPosition += gridWidth
     return alienPosition
@@ -282,17 +253,17 @@ function alienBombMovement () {
   generateBomb()
 }
 
+function removeBomb() {
+  bombPosition.forEach(bomb => {
+    cells[bomb].classList.remove('bomb')
+  }) 
+}
+
 function moveBombDown () {
   bombPosition = bombPosition.map(bomb => {
     bomb += gridWidth
     return bomb
   })
-}
-
-function removeBomb() {
-  bombPosition.forEach(bomb => {
-    cells[bomb].classList.remove('bomb')
-  }) 
 }
 
 function generateBomb() {
@@ -361,6 +332,12 @@ function shoot() {
 
 } 
 
+function removeLaser() {
+  laserPosition.forEach(laser => {
+    cells[laser].classList.remove('laser')
+  }) 
+}
+
 function moveLaserUp () {
   laserPosition = laserPosition.map(laser => {
     if (laser < (gridWidth - 1)) {
@@ -370,12 +347,6 @@ function moveLaserUp () {
     laser -= gridWidth
     return laser
   })
-}
-
-function removeLaser() {
-  laserPosition.forEach(laser => {
-    cells[laser].classList.remove('laser')
-  }) 
 }
 
 function generateLaser() {
@@ -433,8 +404,7 @@ function gamePlay () {
 function checkHit() {
   laserPosition.forEach(laser => {
     if (cells[laser].classList.contains('aliens')) {
-      cells[laser].classList.remove('laser')
-      cells[laser].classList.remove('aliens')
+      cells[laser].classList.remove('laser', 'aliens')
 
       const deadAlien = alienPositions.indexOf(laser)
       alienPositions.splice(deadAlien, 1)
@@ -456,8 +426,7 @@ function checkHit() {
       cells[laser].classList.remove('laser')
 
     } else if (cells[laser].classList.contains('mothership')) {
-      cells[laser].classList.remove('laser')
-      cells[laser].classList.remove('mothership')
+      cells[laser].classList.remove('laser', 'mothership')
       clearInterval(mothershipId)
 
       cells[laser].classList.add('exploded')
@@ -507,6 +476,10 @@ function checkBombHit() {
 function checkLoss () {
   alienPositions.forEach(alien => {
     if (cells[alien].classList.contains('barrier-bottom')) {
+      if (sfxOn) {
+        sfxAudio.src = '/assets/splat.mp3'
+        sfxAudio.play()
+      }
       gameOver()
     } else if (playerLives === 0) {
       gameOver()
