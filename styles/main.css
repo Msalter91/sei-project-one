@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  font-family: sans-serif;
 }
 body {
 background-color: #fcc93c;
@@ -8,6 +9,8 @@ background-color: #fcc93c;
 .page-wrapper {
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  width: 99vw;
 }
 
 .header-wrapper {
@@ -20,25 +23,30 @@ background-color: #fcc93c;
 
 h1 {
   font-family: 'Russo One', sans-serif;
-  font-size: 40px;
+  font-size: 80px;
   color: #f56022;
   text-shadow: 5px 5px #558ABB;
+  margin: 10px;
+
 }
 
 .central-wrapper {
   display: flex;
-  justify-content: center;
-  align-items: flex-start; 
+  justify-content: space-around;
+  align-items: flex-start;
+  height: 80%;
+  width: 100%;
 }
 
 .instructions {
   border: 1px solid black;
-  height: 600px;
-  width: 250px;
+  height: 100%;
+  width: 20%;
+  max-width: 250px;
   text-align: center;
   padding: 10px;
   box-shadow: 10px 10px 5px black;
-  margin-right: 50px;
+  margin-right: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,7 +57,15 @@ h3 {
 }
 
 .instructions button {
-  width: 200px
+  width: 200px;
+}
+.player-data {
+  font-weight: 800;
+}
+
+.player-data span {
+  font-weight: bold;
+  color: #f56022;
 }
 
 .options {
@@ -60,20 +76,20 @@ h3 {
 }
 
 .game-container {
-  height: 650px;
+  height: 95%;
   width: 75%;
   display: flex;
   flex-wrap: wrap;
   border: 1px solid black;
-  background: white;
-  box-shadow: 10px 10px 5px black;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 10px 10px 5px rgb(59, 59, 59);
 }
 
 .game-container > div {
   margin: 0;
   height: 5%;
   width: 5%; 
-  border: 5px solid white 
+  border: 5px solid rgba (255, 255, 255, 0) 
 }
 
 .game-container .player {
@@ -118,11 +134,11 @@ h3 {
 }
 
 .barrier {
-
+border: 0;
 }
 
 .barrier-bottom {
-
+border: 0;
 }
 
 .bomb {
@@ -235,24 +251,49 @@ h3 {
   height: 50px;
   font-size: 20px;
   font-family:'Russo One', sans-serif;
+  margin-bottom: 10px;
 }
 
-.music {
+.options-button {
   background-color: rgba(255,255,255,0);
   border: none;
   height: 50px;
   font-size: 20px;
   font-family:'Russo One', sans-serif;
   border: 3px solid black;
-  border-collapse: collapse;
   margin-bottom: 5px;
+  position: relative;
 }
-.sfx {
-  background-color: rgba(255,255,255,0);
-  border: 3px solid black;
-  height: 50px;
-  font-size: 20px;
-  font-family:'Russo One', sans-serif;
+
+.options-explainer {
+  border: 1px solid black;
+  padding: 10px;
+  background-color: rgba(255,255,255, 0.3);
+  position: absolute;
+}
+
+.stormtrooper-explainer {
+  right: -100px;
+  top: 20px;
+  max-width: 150px;
+  display: none;
+}
+
+.sfx-explainer {
+  right: -105px;
+  max-width: 100px;
+  display: none;
+}
+
+.music-explainer {
+  right: -105px;
+  max-width: 100px;
+  display: none;
+}
+
+
+.stormtrooper {
+  font-size: 15px;
 }
 
 .active {
@@ -270,16 +311,4 @@ h3 {
   background-size: contain;
   background-repeat: no-repeat;
 }
-}
 
-/* @keyframes flash {
-  from {
-    transform: scaleX(0);
-  }
-  50% {
-    transform: scaleX(1);
-  }
-  to {
-    transform: scaleX(0);
-  }
-} */

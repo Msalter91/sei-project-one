@@ -17,11 +17,11 @@
 </head>
 <body>
   <div class="page-wrapper">
-    <div class="header-wrapper">
+    <section class="header-wrapper">
       <header><h1>Code Invaders</h1></header>
-    </div>
+    </section>
     <section class="central-wrapper">
-      <div class="instructions">
+      <aside class="instructions">
         <h3>Instructions</h3>
         <p>Oh No! Coding languages!!! <br>Coding Languages Everywhere!!! <br>
           Use your debugging rubber ducks to elimiate all invading codes before they cause any problems. 
@@ -34,26 +34,29 @@
           <li>S Fire a duck</li>
         </ul>
         <button class="start">start</button>
-        <div>Score <span class="score">0</span></p></div>
-        <div>Lives Remaining <span class="lives">3</span></div>
-        <div>Current Level <span class="level-now">1</span></div>
+        <div class="player-data">Score <span class="score">0</span></p></div>
+        <div class="player-data">High Score <span class="hi-score"></span></div>
+        <div class="player-data">Lives Remaining <span class="lives">3</span></div>
+        <div class="player-data">Current Level <span class="level-now">1</span></div>
         <h3>Options</h3>
-        <button class="active music">Music</button>
-        <button class="active sfx">SFX</button>
-      </div>
-      <div class="game-over">
+        <button class="music options-button">Music<div class="options-explainer music-explainer">Toggle Music</div></button>
+        
+        <button class="sfx options-button">SFX <div class="options-explainer sfx-explainer">Toggle the Quacks</div></button>
+        <button class="stormtrooper options-button">Stormtrooper Mode<div class="options-explainer stormtrooper-explainer">A harder mode - your bullets won't fire directly from your position</div></button>
+      </aside>
+      <section class="game-over">
         <p>GAME OVER</p>
         <div class="button-wrapper">
-          <button class="continue">Continue?</button>
+          <button class="continue">Continue</button>
           <button class="give-up">Give up?</button>
         </div>
-      </div>
+      </section>
       <div class="level-up">
-        <p class="level-indicator">Congratulations you have beaten level 10</p>
+        <p class="level-indicator"></p>
         <button class="next-level">Continue</button>
       </div>
-      <div class="game-container">
-      </div>
+      <main class="game-container">
+      </main>
     </section>
   </div>
   <audio class="main-audio" src="/assets/main_song.mp3"></audio>

@@ -2,8 +2,10 @@
 const container = document.querySelector('.game-container')
 const startBtn = document.querySelector('.start')
 const scoreSpan = document.querySelector('.score')
+const hiScoreSpan = document.querySelector('.hi-score')
 const livesLeft = document.querySelector('.lives')
 const gameOverSplash = document.querySelector('.game-over')
+const giveUp = document.querySelector('.give-up')
 const playAgain = document.querySelector('.continue')
 const levelUpBox = document.querySelector('.level-up')
 const levelUpPara = document.querySelector('.level-indicator')
@@ -13,6 +15,11 @@ const audioElement = document.querySelector('.main-audio')
 const sfxBtn = document.querySelector('.sfx')
 const musicBtn = document.querySelector('.music')
 const sfxAudio = document.querySelector('.sfx-audio')
+const stormTrooperBtn = document.querySelector('.stormtrooper')
+const musicExplainer = document.querySelector('.music-explainer')
+const sfxExplainer = document.querySelector('.sfx-explainer')
+const stormTrooperExplainer = document.querySelector('.stormtrooper-explainer')
+
 
 // Grid Variables 
 const cells = []
@@ -47,9 +54,10 @@ let level = 1
 let baseSpeed = 200
 let alienBombSpeed = 2000
 let mothershipSpeed = 15000
-let musicOn = true 
-let sfxOn = true 
-
+let musicOn = false
+let sfxOn = false
+let stormTrooperMode = false
+let hiScore = localStorage.getItem('hi-score')
 
 // Game Functions
 
@@ -106,6 +114,8 @@ function reset () {
   score = 0
   scoreSpan.innerHTML = `${score}`
   level = 1
+  startBtn.innerHTML = `Start Level ${level}`
+  hiScoreSpan.innerHTML = hiScore
 } 
 
 function playNextLevel () {
@@ -131,6 +141,7 @@ function playNextLevel () {
   countLeft = 0
   countRight = 0
   startBtn.innerHTML = `Start Level ${level}`
+  hiScoreSpan.innerHTML = hiScore
 }
 
 // Game Set-up Functions 
@@ -144,7 +155,7 @@ function createGrid() {
 }
 
 function generatePLayer () {
-  playerPosition = 390
+  playerPosition = ((gridWidth * gridWidth) - (gridWidth / 2))
   cells[playerPosition].classList.add('player')
 }
 
@@ -329,18 +340,25 @@ function shooting (e) {
   }
   if (e.code === 'KeyS' ) {
     shoot()
-    if (sfxAudio.currentTime > 0){
-      sfxAudio.currentTime = 0
+    if (sfxOn){
+      sfxAudio.play()
     }
-    sfxAudio.play()
-  } else e.preventDefault()
+  } else e.preventDefault() 
   return
 }
 
 function shoot() {
-  laser = (playerPosition - gridWidth)
-  laserPosition.push(laser)
-  generateLaser()
+  if (stormTrooperMode) { 
+    const offSet = Math.floor(Math.random() * (2 - (-2) + 1) + (-2))
+    laser = (playerPosition - (gridWidth + offSet))
+    laserPosition.push(laser)
+    generateLaser()
+  } else {
+    laser = (playerPosition - gridWidth)
+    laserPosition.push(laser)
+    generateLaser()
+  }
+
 } 
 
 function moveLaserUp () {
@@ -400,9 +418,10 @@ function gamePlay () {
     checkBombHit()
     winCondition()
     checkLoss()
+    newHiScore()
   }, 50)
-  if (musicOn && audioElement.currentTime < 80) {
-    audioElement.currentTime = 80
+  if (musicOn && audioElement.currentTime < 90) {
+    audioElement.currentTime = 85
     audioElement.play()
   }
 }
@@ -447,7 +466,7 @@ function checkHit() {
       const laserToRemove = laserPosition.indexOf(laser)
       laserPosition.splice(laserToRemove, 1) 
 
-      score += 250
+      score += 2000
       scoreSpan.innerText = score 
     } else {
       return
@@ -500,6 +519,7 @@ function winCondition () {
     clearInterval(mothershipId)
     clearInterval(mothershipGenerationId)
     clearInterval(laserMovementId)
+    isPlaying = false
     levelUpBox.style.display = 'flex'
     levelUpPara.innerHTML = `Congratulations you have beaten level ${level}.`
     level = level + 1
@@ -515,7 +535,7 @@ function toggleMusic() {
     audioElement.pause()
   } else if (!musicOn) {
     if (isPlaying) {
-      audioElement.currentTime = 80
+      audioElement.currentTime = 85
       audioElement.play()
     }
     musicOn = true
@@ -529,6 +549,57 @@ function toggleSFX() {
   } else sfxOn = true
 }
 
+function toggleStormTrooper() {
+  stormTrooperBtn.classList.toggle('active')
+  if (stormTrooperMode) {
+    stormTrooperMode = false
+  } else stormTrooperMode = true
+}
+
+function displayExplainer (e) {
+  if (e.target.classList.contains('music')) {
+    musicExplainer.style.display = 'block'
+  }
+  if (e.target.classList.contains('sfx')) {
+    sfxExplainer.style.display = 'block'
+  }
+  if (e.target.classList.contains('stormtrooper')) {
+    stormTrooperExplainer.style.display = 'block'
+  }
+  
+}
+
+function removeExplainer (e) {
+  if (e.target.classList.contains('music')) {
+    musicExplainer.style.display = 'none'
+  } 
+  if (e.target.classList.contains('sfx')) {
+    sfxExplainer.style.display = 'none'
+  }
+  if (e.target.classList.contains('stormtrooper')) {
+    stormTrooperExplainer.style.display = 'none'
+  }
+} 
+//Hi Score
+function generateHiScore () {
+  if (!localStorage.getItem('hi-score'))
+    localStorage.setItem('hi-score', 0)
+  else {
+    hiScoreSpan.innerHTML = `${hiScore}`
+  }
+}
+
+function newHiScore () {
+  hiScoreSpan.innerHTML = `${hiScore}`
+  if (parseInt(hiScore) >= score) {
+    return
+  } else {
+    localStorage.setItem('hi-score', score)
+    hiScore = localStorage.getItem('hi-score')
+    hiScoreSpan.innerHTML = `${hiScore}`
+  }
+}
+
 
 // Functions to run at start up
 createGrid()
@@ -538,6 +609,7 @@ generateSecondAliens()
 generateThirdAliens()
 generateTopBarrier()
 generateBottomBarrier()
+generateHiScore()
 showLevel.innerHTML = `${level}`
 
 
@@ -549,6 +621,19 @@ document.addEventListener('keyup', shooting)
 startBtn.addEventListener('click', gamePlay)
 playAgain.addEventListener('click', reset)
 nextLevelButton.addEventListener('click', playNextLevel)
+
 musicBtn.addEventListener('click', toggleMusic)
+musicBtn.addEventListener('mouseenter', displayExplainer)
+musicBtn.addEventListener('mouseleave', removeExplainer)
+
 sfxBtn.addEventListener('click', toggleSFX)
+sfxBtn.addEventListener('mouseenter', displayExplainer)
+sfxBtn.addEventListener('mouseleave', removeExplainer)
+
+giveUp.addEventListener('click', reset)
+
+stormTrooperBtn.addEventListener('click', toggleStormTrooper)
+stormTrooperBtn.addEventListener('mouseenter', displayExplainer)
+stormTrooperBtn.addEventListener('mouseleave', removeExplainer)
+
 

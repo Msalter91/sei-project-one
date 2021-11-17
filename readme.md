@@ -7,7 +7,8 @@ The player had to be able to clear at least one level of aliens, and the score h
 
 ### The Theme
 
-The idea behind the theme is the very task it self. Going into my GA course, I had no programming experience. A good friend of mine introduced me to the concept of rubberduck debugging. Armed only with my trusty yellow, semi-aquatic companion, I had rode into battle against my own code. Slaying bugs one by one and completeing the challenge. Therefore, instead of lasers the player fires sunglass-clad rubber ducks, and must defeat hord and hord of bug dropped Javascript aliens.  
+The idea behind the theme is the very task itself. 
+Going into my GA course, I had no programming experience. A good friend of mine introduced me to the concept of rubberduck debugging. Talking to an innanimate quacker helped me work through a lot of early code bugs. So, armed only with my trusty yellow, semi-aquatic companion, I rode into battle against my own code. Slaying bugs one by one and completeing the challenge. Instead of lasers, the player fires sunglass-clad rubber ducks, and must defeat hords of Javascript aliens which drop bugs towards the players. 
 
 ## Generating the Game Objects
 
@@ -15,6 +16,14 @@ The idea behind the theme is the very task it self. Going into my GA course, I h
 The game is played on a 'grid' of divs that are generated at the start of that game using a for loop. The default grid width is set to 20 but this can easily be changed. 
 Each of these divs is pushed into an array cells[] which allows the game to keep track of the positions of various game objects and move them accross the board. 
 Along side this - the top row and bottom row of cells is iteratred through and given classes. These classes are used in collision avoidance later on to ensure that objects do not escape the board and crash the game. 
+
+`function createGrid() {
+  for (let i = 0; i < cellCount; i++) {
+    const cell = document.createElement('div')
+    container.appendChild(cell)
+    cells.push(cell)
+  }
+}`
 
 ### The Aliens 
 The aliens are placed on the board in a very similar way to the board creation method. 
@@ -71,9 +80,11 @@ I created a function that runs on a repeat timer in the background to check isf 
 2. If needed the class of alien or mothership is also removed 
 3. In order to make sure that the Aliens stay dead and that the lasers don't continue on into obvlivion and crash the game - the laser and alien need to be sliced from their array. 
 The index of the alien hit and the laser that hit it are put into variables and then I used the slice method to cut that single laser/alien from the array. 
-4. If the player hits and alien, the score increased by 100. 250 if they hit the mothership. This updates on the player screen.
+4. If the player hits and alien, the score increased by 100 or 2000 if they hit the mothership. This updates on the player screen.
 
 The player being hit by an bomb is checked in the same way as the lasers hitting objects. If hit, the player's life count drops by 1 and a little blood spurt gif appears above the spot where the player was hit for 700ms. 
+
+
 
 
 
