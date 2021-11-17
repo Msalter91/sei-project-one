@@ -37,11 +37,16 @@
         <div>Score <span class="score">0</span></p></div>
         <div>Lives Remaining <span class="lives">3</span></div>
         <div>Current Level <span class="level-now">1</span></div>
+        <h3>Options</h3>
+        <button class="active music">Music</button>
+        <button class="active sfx">SFX</button>
       </div>
       <div class="game-over">
         <p>GAME OVER</p>
-        <button class="continue">Continue?</button>
-        <button class="give-up">Give up?</button>
+        <div class="button-wrapper">
+          <button class="continue">Continue?</button>
+          <button class="give-up">Give up?</button>
+        </div>
       </div>
       <div class="level-up">
         <p class="level-indicator">Congratulations you have beaten level 10</p>
@@ -51,6 +56,7 @@
       </div>
     </section>
   </div>
-  <audio src="/assets/main_song.mp3"></audio>
+  <audio class="main-audio" src="/assets/main_song.mp3"></audio>
+  <audio src="/assets/Quack.mp3" class="sfx-audio"></audio>
 </body>
 </html>

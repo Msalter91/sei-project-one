@@ -9,7 +9,10 @@ const levelUpBox = document.querySelector('.level-up')
 const levelUpPara = document.querySelector('.level-indicator')
 const nextLevelButton = document.querySelector('.next-level')
 const showLevel = document.querySelector('.level-now')
-const audioElement = document.querySelector('audio')
+const audioElement = document.querySelector('.main-audio')
+const sfxBtn = document.querySelector('.sfx')
+const musicBtn = document.querySelector('.music')
+const sfxAudio = document.querySelector('.sfx-audio')
 
 // Grid Variables 
 const cells = []
@@ -44,6 +47,8 @@ let level = 1
 let baseSpeed = 200
 let alienBombSpeed = 2000
 let mothershipSpeed = 15000
+let musicOn = true 
+let sfxOn = true 
 
 
 // Game Functions
@@ -70,8 +75,10 @@ function moveMothership () {
       clearInterval(mothershipId)
       cells[mothershipPosition].classList.remove('mothership') 
     }
-  }, 500)
+  }, 250)
 }
+
+// Renewing the game
 
 function reset () {
   gameOverSplash.style.display = 'none'
@@ -97,6 +104,7 @@ function reset () {
   countLeft = 0
   countRight = 0
   score = 0
+  scoreSpan.innerHTML = `${score}`
   level = 1
 } 
 
@@ -321,6 +329,10 @@ function shooting (e) {
   }
   if (e.code === 'KeyS' ) {
     shoot()
+    if (sfxAudio.currentTime > 0){
+      sfxAudio.currentTime = 0
+    }
+    sfxAudio.play()
   } else e.preventDefault()
   return
 }
@@ -360,19 +372,7 @@ function laserMovement () {
   generateLaser()
 }
 
-function winCondition () {
-  if (alienPositions.length === 0) {
-    clearInterval(gameTimer)
-    clearInterval(timerId)
-    clearInterval(alienBombTimer)
-    clearInterval(mothershipId)
-    clearInterval(mothershipGenerationId)
-    clearInterval(laserMovementId)
-    levelUpBox.style.display = 'flex'
-    levelUpPara.innerHTML = `Congratulations you have beaten level ${level}.`
-    level = level + 1
-  }
-}
+// Game start and end functions 
 
 function gameOver () {
   clearInterval(gameTimer)
@@ -393,19 +393,21 @@ function gamePlay () {
   generateMothership()
   laserMovementId = setInterval(() => {
     laserMovement()
-  }, 300)
+  }, 50)
   gameTimer = setInterval(() => {
     checkHit()
     alienBombMovement()
     checkBombHit()
     winCondition()
     checkLoss()
-  }, 100)
-  audioElement.currentTime = 80
-  audioElement.play()
+  }, 50)
+  if (musicOn && audioElement.currentTime < 80) {
+    audioElement.currentTime = 80
+    audioElement.play()
+  }
 }
 
-// Collision Checks 
+// Collision and Background Checks 
 
 function checkHit() {
   laserPosition.forEach(laser => {
@@ -422,6 +424,11 @@ function checkHit() {
       score += 100
       scoreSpan.innerText = score
 
+      cells[laser].classList.add('exploded')
+      setTimeout(() => {
+        cells[laser].classList.remove('exploded') 
+      }, 300)
+
     } else if (cells[laser].classList.contains('barrier')) {
       const laserToRemove = laserPosition.indexOf(laser)
       laserPosition.splice(laserToRemove, 1)  
@@ -431,6 +438,11 @@ function checkHit() {
       cells[laser].classList.remove('laser')
       cells[laser].classList.remove('mothership')
       clearInterval(mothershipId)
+
+      cells[laser].classList.add('exploded')
+      setTimeout(() => {
+        cells[laser].classList.remove('exploded') 
+      }, 700)
       
       const laserToRemove = laserPosition.indexOf(laser)
       laserPosition.splice(laserToRemove, 1) 
@@ -446,8 +458,12 @@ function checkHit() {
 function checkBombHit() {
   bombPosition.forEach(bomb => {
     if (cells[bomb].classList.contains('player')) {
-      cells[bomb].classList.remove('player')
       cells[bomb].classList.remove('bomb')
+      
+      cells[bomb - gridWidth].classList.add('hit')
+      setTimeout(() => {
+        cells[bomb - gridWidth].classList.remove('hit')
+      }, 700)
       
       const bombToRemove = bombPosition.indexOf(bomb)
       bombPosition.splice(bombToRemove, 1) 
@@ -476,6 +492,44 @@ function checkLoss () {
   })
 }
 
+function winCondition () {
+  if (alienPositions.length === 0) {
+    clearInterval(gameTimer)
+    clearInterval(timerId)
+    clearInterval(alienBombTimer)
+    clearInterval(mothershipId)
+    clearInterval(mothershipGenerationId)
+    clearInterval(laserMovementId)
+    levelUpBox.style.display = 'flex'
+    levelUpPara.innerHTML = `Congratulations you have beaten level ${level}.`
+    level = level + 1
+  }
+}
+
+// Music and SFX Functions
+
+function toggleMusic() {
+  musicBtn.classList.toggle('active')
+  if (musicOn) {
+    musicOn = false
+    audioElement.pause()
+  } else if (!musicOn) {
+    if (isPlaying) {
+      audioElement.currentTime = 80
+      audioElement.play()
+    }
+    musicOn = true
+  }
+}
+
+function toggleSFX() {
+  sfxBtn.classList.toggle('active')
+  if (sfxOn) {
+    sfxOn = false
+  } else sfxOn = true
+}
+
+
 // Functions to run at start up
 createGrid()
 generatePLayer()
@@ -487,11 +541,14 @@ generateBottomBarrier()
 showLevel.innerHTML = `${level}`
 
 
-
 // Event listener
 
 document.addEventListener('keydown', playerMovement)
 document.addEventListener('keyup', shooting)
+
 startBtn.addEventListener('click', gamePlay)
 playAgain.addEventListener('click', reset)
 nextLevelButton.addEventListener('click', playNextLevel)
+musicBtn.addEventListener('click', toggleMusic)
+sfxBtn.addEventListener('click', toggleSFX)
+

@@ -17,10 +17,6 @@ background-color: #fcc93c;
   justify-content: center;
 }
 
-button {
-  align-self: flex-end;
-  margin-right: 200px;
-}
 
 h1 {
   font-family: 'Russo One', sans-serif;
@@ -32,21 +28,28 @@ h1 {
 .central-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: flex-start; 
 }
 
 .instructions {
   border: 1px solid black;
-  height: 750px;
+  height: 600px;
   width: 250px;
   text-align: center;
   padding: 10px;
   box-shadow: 10px 10px 5px black;
   margin-right: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 h3 {
   font-family: 'Russo One', sans-serif; 
+}
+
+.instructions button {
+  width: 200px
 }
 
 .options {
@@ -57,8 +60,8 @@ h3 {
 }
 
 .game-container {
-  height: 800px;
-  width: 1500px;
+  height: 650px;
+  width: 75%;
   display: flex;
   flex-wrap: wrap;
   border: 1px solid black;
@@ -115,7 +118,7 @@ h3 {
 }
 
 .barrier {
-  
+
 }
 
 .barrier-bottom {
@@ -176,6 +179,11 @@ h3 {
   transition: 3s ease;
 }
 
+.give-up:hover {
+  transform: scale(1.2);
+  transition: 3s ease;
+}
+
 .level-up {
   display: none;
   height: 500px;
@@ -220,3 +228,58 @@ h3 {
   transform: scale(1.2);
   transition: 3s ease;
 }
+
+.start {
+  background-color: rgba(255,255,255,0.5);
+  border: none;
+  height: 50px;
+  font-size: 20px;
+  font-family:'Russo One', sans-serif;
+}
+
+.music {
+  background-color: rgba(255,255,255,0);
+  border: none;
+  height: 50px;
+  font-size: 20px;
+  font-family:'Russo One', sans-serif;
+  border: 3px solid black;
+  border-collapse: collapse;
+  margin-bottom: 5px;
+}
+.sfx {
+  background-color: rgba(255,255,255,0);
+  border: 3px solid black;
+  height: 50px;
+  font-size: 20px;
+  font-family:'Russo One', sans-serif;
+}
+
+.active {
+  background-color: rgba(255,255,255, 1); 
+}
+
+.exploded {
+  background-image: url('/assets/explode.gif');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.hit {
+  background-image: url('/assets/blood.gif');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+}
+
+/* @keyframes flash {
+  from {
+    transform: scaleX(0);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+} */
