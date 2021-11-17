@@ -448,7 +448,7 @@ function checkHit() {
       cells[laser].classList.add('exploded')
       setTimeout(() => {
         cells[laser].classList.remove('exploded') 
-      }, 300)
+      }, 200)
 
     } else if (cells[laser].classList.contains('barrier')) {
       const laserToRemove = laserPosition.indexOf(laser)
@@ -620,6 +620,8 @@ showLevel.innerHTML = `${level}`
 
 document.addEventListener('keydown', playerMovement)
 document.addEventListener('keyup', shooting)
+window.addEventListener('keyup', cheatCodes)
+
 
 startBtn.addEventListener('click', gamePlay)
 playAgain.addEventListener('click', reset)
@@ -639,4 +641,29 @@ stormTrooperBtn.addEventListener('click', toggleStormTrooper)
 stormTrooperBtn.addEventListener('mouseenter', displayExplainer)
 stormTrooperBtn.addEventListener('mouseleave', removeExplainer)
 
+
+// Cheat Codes Stuff 
+
+const keys = []
+const slowDownCheat = 'littlecheater'
+const tooManyLives =  'jakscatslives'
+const ruinEverything = 'iletalienswin'
+
+function cheatCodes(e) {
+  keys.push(e.key)
+  keys.splice(-slowDownCheat.length - 1, keys.length - slowDownCheat.length)
+
+  if (keys.join('').includes(slowDownCheat)) {
+    console.log('the code works')
+    baseSpeed = 1000
+    playerLives = 25
+  }
+  if ((keys.join('').includes(tooManyLives))) {
+    playerLives = 14
+    livesLeft.innerHTML = playerLives
+  }
+  if ((keys.join('').includes(ruinEverything))) {
+    baseSpeed = 25
+  }
+}
 
