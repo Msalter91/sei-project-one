@@ -349,7 +349,7 @@ function shooting (e) {
 
 function shoot() {
   if (stormTrooperMode) { 
-    const offSet = Math.floor(Math.random() * (2 - (-2) + 1) + (-2))
+    const offSet = Math.floor(Math.random() * (4 - (-4) + 1) + (-4))
     laser = (playerPosition - (gridWidth + offSet))
     laserPosition.push(laser)
     generateLaser()
@@ -426,6 +426,8 @@ function gamePlay () {
   }
 }
 
+
+
 // Collision and Background Checks 
 
 function checkHit() {
@@ -459,6 +461,7 @@ function checkHit() {
       clearInterval(mothershipId)
 
       cells[laser].classList.add('exploded')
+
       setTimeout(() => {
         cells[laser].classList.remove('exploded') 
       }, 700)

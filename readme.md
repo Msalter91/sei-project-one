@@ -84,6 +84,14 @@ The index of the alien hit and the laser that hit it are put into variables and 
 
 The player being hit by an bomb is checked in the same way as the lasers hitting objects. If hit, the player's life count drops by 1 and a little blood spurt gif appears above the spot where the player was hit for 700ms. 
 
+### Stormtrooper Mode 
+
+To add a quick way of making the game more challenging I added a 'stormtrooper mode' It can be turned on with a toggle and changes a boulean in the Javascript when activated. 
+If stormtrooped mode is turned on the way the shoot function slightly changes - offsetting the lasers initial positions from up to ±4 places from where it would usually be 
+
+![Alt text](/assets/readme_images/stormtroopermodecode.png?raw=true "Optional Title")
+  
+
 
 
 
