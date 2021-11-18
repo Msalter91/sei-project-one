@@ -2,6 +2,7 @@
 const container = document.querySelector('.game-container')
 const startBtn = document.querySelector('.start')
 const scoreSpan = document.querySelector('.score')
+const finalScoreSpan = document.querySelector('.final-score')
 const hiScoreSpan = document.querySelector('.hi-score')
 const livesLeft = document.querySelector('.lives')
 const gameOverSplash = document.querySelector('.game-over')
@@ -48,10 +49,11 @@ let laser = null
 //Game Variables
 let score = 0
 let isPlaying = false
+let levelScreen = false
 let playerLives = 3
 let level = 1
 let baseSpeed = 200
-let alienBombSpeed = 2000
+let alienBombSpeed = 1000
 let mothershipSpeed = 15000
 let musicOn = false
 let sfxOn = false
@@ -88,6 +90,7 @@ function moveMothership () {
 // Renewing the game
 
 function clearBoard() {
+  levelScreen = false
   cells.forEach(cell => {
     cell.classList.remove('aliens', 'laser', 'mothership', 'bomb')
   })
@@ -167,7 +170,7 @@ function generateBottomBarrier () {
 
 function determineSpeed () {
   baseSpeed = 200 - (level * 10)
-  alienBombSpeed = 2000 - (level * 50)
+  alienBombSpeed = 1000 - (level * 50)
   mothershipSpeed = 15000 - (level * 700)
 }
 
@@ -276,6 +279,7 @@ function generateBomb() {
 // Player Movments 
 
 function playerMovement (e){
+  e.preventDefault()
   if (e.code === 'ArrowRight') {
     if (playerPosition === cells.length - 1) {
       return
@@ -306,7 +310,12 @@ function moveRight () {
 // Shooting
 
 function shooting (e) {
+  e.preventDefault()
+  if (levelScreen) {
+    return
+  }
   if (!isPlaying) {
+    gamePlay()
     return
   }
   if (e.code === 'KeyS' ) {
@@ -364,6 +373,8 @@ function laserMovement () {
 // Game start and end functions 
 
 function gameOver () {
+  isPlaying = false
+  levelScreen = true
   clearInterval(gameTimer)
   clearInterval(timerId)
   clearInterval(alienBombTimer)
@@ -371,6 +382,8 @@ function gameOver () {
   clearInterval(mothershipGenerationId)
   clearInterval(laserMovementId)
   gameOverSplash.style.display = 'flex'
+  level = 1
+  finalScoreSpan.innerHTML = score
 }
 
 function gamePlay () {
@@ -496,6 +509,7 @@ function winCondition () {
     clearInterval(mothershipGenerationId)
     clearInterval(laserMovementId)
     isPlaying = false
+    levelScreen = true
     levelUpBox.style.display = 'flex'
     levelUpPara.innerHTML = `Congratulations you have beaten level ${level}.`
     level = level + 1
@@ -533,6 +547,7 @@ function toggleStormTrooper() {
 }
 
 function displayExplainer (e) {
+  e.preventDefault()
   if (e.target.classList.contains('music')) {
     musicExplainer.style.display = 'block'
   }
@@ -546,6 +561,7 @@ function displayExplainer (e) {
 }
 
 function removeExplainer (e) {
+  e.preventDefault()
   if (e.target.classList.contains('music')) {
     musicExplainer.style.display = 'none'
   } 
@@ -576,7 +592,6 @@ function newHiScore () {
   }
 }
 
-
 // Functions to run at start up
 createGrid()
 generatePLayer()
@@ -594,6 +609,7 @@ showLevel.innerHTML = `${level}`
 document.addEventListener('keydown', playerMovement)
 document.addEventListener('keyup', shooting)
 window.addEventListener('keyup', cheatCodes)
+// window.addEventListener('keyup', handleKeyboard)
 
 
 startBtn.addEventListener('click', gamePlay)
@@ -623,6 +639,7 @@ const tooManyLives =  'jakscatslives'
 const ruinEverything = 'iletalienswin'
 
 function cheatCodes(e) {
+  e.preventDefault()
   keys.push(e.key)
   keys.splice(-slowDownCheat.length - 1, keys.length - slowDownCheat.length)
 
