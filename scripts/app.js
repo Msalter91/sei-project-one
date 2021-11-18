@@ -61,7 +61,7 @@ let sfxOn = false
 let stormTrooperMode = false
 let hiScore = localStorage.getItem('hi-score')
 
-// Game Functions
+// Mothership Functions
 
 function generateAlien() {
   alienPositions.forEach(alien => {
@@ -381,7 +381,7 @@ function laserMovement () {
   generateLaser()
 }
 
-// Game start and end functions 
+// Main game functions 
 
 function gameOver () {
   level = 1
@@ -538,7 +538,7 @@ function winCondition () {
   }
 }
 
-// Music and SFX Functions
+// Toggleable functions 
 
 function toggleMusic() {
   musicBtn.classList.toggle('active')
@@ -632,8 +632,6 @@ showLevel.innerHTML = `${level}`
 document.addEventListener('keydown', playerMovement)
 document.addEventListener('keyup', shooting)
 window.addEventListener('keyup', cheatCodes)
-// window.addEventListener('keyup', handleKeyboard)
-
 
 startBtn.addEventListener('click', gamePlay)
 playAgain.addEventListener('click', reset)
@@ -667,7 +665,6 @@ function cheatCodes(e) {
   keys.splice(-slowDownCheat.length - 1, keys.length - slowDownCheat.length)
 
   if (keys.join('').includes(slowDownCheat)) {
-    console.log('the code works')
     baseSpeed = 1000
     playerLives = 25
   }

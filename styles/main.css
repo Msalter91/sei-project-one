@@ -80,7 +80,7 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   border: 1px solid black;
-  background-image:  linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/assets/stars.jpg);
+  background-image:  linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../assets/stars.jpg);
   box-shadow: 10px 10px 5px rgb(59, 59, 59);
 }
 
@@ -92,7 +92,7 @@ h3 {
 }
 
 .game-container .player {
-  background-image: url(/assets/panic_sprite.gif);
+  background-image: url(../assets/panic_sprite.gif);
   background-size: contain;
   background-repeat: no-repeat;
   border: none;
@@ -103,32 +103,20 @@ h3 {
 }
 
 .right {
-  background-image: url(/assets/panic_sprite.gif);
+  background-image: url(/..assets/panic_sprite.gif);
 }
 
 .aliens {
-  background-image: url(/assets/javascript.png);
+  background-image: url(../assets/javascript.png);
   background-size: contain;
   background-repeat: no-repeat;
 
 }
-
-/* .aliensjs {
-  background-image: url(/assets/javascript.png);
-}
-
-.alienshtml {
-  background-image: url(/assets/html_logo.png);
-}
-
-.alienscss {
-  background-image: url(/assets/css_logo.png);
-} */
 
 .laser {
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url(/assets/duck_laser.png);
+  background-image: url(../assets/duck_laser.png);
 }
 
 .barrier {
@@ -140,15 +128,16 @@ border: 0;
 }
 
 .bomb {
-  background-image: url(/assets/bug2.png);
+  background-image: url(../assets/bug2.png);
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .mothership {
-  background: url(/assets/mothership.png);
+  background: url(../assets/mothership.png);
   background-size: contain;
   background-repeat: no-repeat;
+  transition: ease-in-out 0.1s;
 }
 
 .game-over {
@@ -165,7 +154,7 @@ border: 0;
 
 .game-over p {
   font-family: 'Russo One', sans-serif;
-  font-size: 150px;
+  font-size: 100px;
   color: white;
   text-align: center;
   margin: 0px;
@@ -182,10 +171,12 @@ border: 0;
 
 .continue {
   background-color: green;
+  text-align: center;
 }
 
 .give-up {
   background-color: darkred;
+  text-align: center;
 }
 
 .continue:hover {
@@ -301,13 +292,13 @@ border: 0;
 }
 
 .exploded {
-  background-image: url('/assets/explode.gif');
+  background-image: url(../assets/explode.gif);
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .hit {
-  background-image: url('/assets/blood.gif');
+  background-image: url(../assets/blood.gif);
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -349,12 +340,29 @@ li {
 }
 
 .shield {
-  background: url(/assets/barrier.png);
+  background: url(../assets/barrier.png);
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
 }
 
-.final-score p {
+.game-over .final-score p {
   color: white;
+}
+
+/* .aliensjs {
+  background-image: url(../assets/javascript.png);
+}
+
+.alienshtml {
+  background-image: url(../assets/html_logo.png);
+}
+
+.alienscss {
+  background-image: url(../assets/css_logo.png);
+} */
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
 }

@@ -80,6 +80,11 @@ Each move to the left is counted until it reaches the counter reaches the point 
 ### The Mothership 
 Once the moterhship is generated, an interval-timed function is run that increases its position by 1, and adds and removed the class as appropriate. 
 
+### Shields Up 
+The shields positions are hard-coded into an array and once the board is generate the shields are placed into the cells that match their values. 
+
+The shields are the part that I would like to continue working on the most - they disappear when hit by either lasers or bombs, but it would be nice to add an effect where they dissapear gradually over time, or can take multiple hits. 
+
 ## Shooting Things 
 
 The shooting event is handled by a keyup event listener on the S-key. One of the most frustraiting bugs that emerged in the whole process was created by the default behaviour of some keys. Pressing space would cause all my timer based functions to duplicate breaking the alien movement and casusing the game to become unplayable. Once all defaults were prevented within the eventlistener function, the bug was squashed. 
@@ -103,7 +108,17 @@ I created a function that runs on a repeat timer in the background to check isf 
 The index of the alien hit and the laser that hit it are put into variables and then I used the slice method to cut that single laser/alien from the array. 
 4. If the player hits and alien, the score increased by 100 or 2000 if they hit the mothership. This updates on the player screen.
 
+### Being hit by things 
+
+I really wanted to include the weapons dropped by the aliens in the game and so I added a random number generator to select one Alien in the array and have generate a 'bomb' one grid width below 
+
+Similar to the lasers - everytime a bomb is generated its cell location is pushed into an array and the bombs move in the same way as the laser. Visually this is represented by the class having a background (in this case a bug)
+
+In order to clear the bomb - I gave the bottom layer of the grid the class of 'barrier'. When a class contains both barrier and bomb, the bomb is indexed, sliced from the array and the bomb class removed.
+
 The player being hit by an bomb is checked in the same way as the lasers hitting objects. If hit, the player's life count drops by 1 and a little blood spurt gif appears above the spot where the player was hit for 700ms. 
+
+I did consider adding a sound for this - but as I imagine most people would play with the SFX off, I decided that a visual cue was better. 
 
 ### Stormtrooper Mode 
 
@@ -111,6 +126,34 @@ To add a quick way of making the game more challenging I added a 'stormtrooper m
 If stormtrooped mode is turned on the way the shoot function slightly changes - offsetting the lasers initial positions from up to ±4 places from where it would usually be 
 
 ![Alt text](/assets/readme_images/stormtroopermodecode.png?raw=true "Optional Title")
+
+One small unintneded consequnce of this is that bullets have the ability to fire from the opposite side of the screen when the player is close to the grid edges - this is something I would like to fx in the next version. 
+
+## The Level System 
+
+One of the key foundations of space-invaders is moving through the levels and the Aliens getting faster every time. So I decided that a level function would make the game much more enjoyable for the players. 
+
+I thought about hard coding the levels in, with a finite number and running a level check at the start of each game. After planning this out a bit, I realised that it was a lot of code and a pretty inefficient way of doing it. 
+
+Plan B was to change the speed of each enemy object movement to a changeable variable. Every level up a function is run which changes their movement functions frequences using the level as a value. 
+
+`function determineSpeed () {
+  baseSpeed -= (level * 10)
+  alienBombSpeed -= (level * 50)
+  mothershipSpeed -= (level * 700)
+}`
+
+To successfully pass a level - the game checks the length of alien position array, once it reaches 0, all timer intervals are stopped and and a box appears telling them the level they have passed and giving them the options to continue. Once continue is selected - the board is cleared, the level increased and the speeds reassigned based on the new level. 
+
+## Losing 
+
+THe player starts with 3 lives and loses a life everytime they are hit by an alien bomb. If the life counter reaches 0 - the game is over. Similarly, if any cell has a class of alien and bottom barrier, it means that the aliens have reached the bottom row and the player instantly loses no matter how many lives they have. 
+
+Check loss is a funciton which runs repeatedly in the background and constantly checks for both of these conditions. 
+
+Once a player has lost - the game is stopped and the player shown a game over box which displays their final score and give them options to play again or give up. Both actually reset the game to level 1 and reset all value to start the game again, but it's nice to give the illusion of choice. 
+
+
   
 
 
