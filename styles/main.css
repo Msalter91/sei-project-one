@@ -80,7 +80,7 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   border: 1px solid black;
-  background-color: rgb(255, 255, 255);
+  background-image:  linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/assets/stars.jpg);
   box-shadow: 10px 10px 5px rgb(59, 59, 59);
 }
 
@@ -140,7 +140,7 @@ border: 0;
 }
 
 .bomb {
-  background-image: url(/assets/pngegg.png);
+  background-image: url(/assets/bug2.png);
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -335,7 +335,7 @@ li {
   text-align: center;
   font-weight: bold;
   width: 90%;
-  display: block;
+  display: none;
 }
 
 .values {
@@ -346,4 +346,15 @@ li {
 .values img {
   max-width: 20px;
   margin: 10px;
+}
+
+.shield {
+  background: url(/assets/barrier.png);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.final-score p {
+  color: white;
 }

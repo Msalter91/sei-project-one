@@ -40,6 +40,7 @@ let laserMovementId = null
 let alienPositions = []
 let bombPosition = []
 let laserPosition = []
+const sheildPosition = [341, 342, 348, 349, 355, 356]
 
 // Single-Object Positions 
 let mothershipPosition = null 
@@ -52,7 +53,7 @@ let isPlaying = false
 let levelScreen = false
 let playerLives = 3
 let level = 1
-let baseSpeed = 200
+let baseSpeed = 300
 let alienBombSpeed = 1000
 let mothershipSpeed = 15000
 let musicOn = false
@@ -92,7 +93,7 @@ function moveMothership () {
 function clearBoard() {
   levelScreen = false
   cells.forEach(cell => {
-    cell.classList.remove('aliens', 'laser', 'mothership', 'bomb')
+    cell.classList.remove('aliens', 'laser', 'mothership', 'bomb', 'shield')
   })
   alienPositions = []
   laserPosition = []
@@ -105,6 +106,7 @@ function clearBoard() {
   generateFirstAliens()
   generateSecondAliens()
   generateThirdAliens()
+  generateShields()
 }
 
 function reset () {
@@ -131,6 +133,12 @@ function createGrid() {
     container.appendChild(cell)
     cells.push(cell)
   }
+}
+
+function generateShields () {
+  sheildPosition.forEach(shield => {
+    cells[shield].classList.add('shield')
+  })
 }
 
 function generatePLayer () {
@@ -163,6 +171,7 @@ function generateTopBarrier () {
   } 
 }
 
+
 function generateBottomBarrier () {
   for (let i = (gridWidth * gridWidth) - 1; i >= (gridWidth * gridWidth) - gridWidth; i--) {
     cells[i].classList.add('barrier-bottom')
@@ -170,9 +179,9 @@ function generateBottomBarrier () {
 }
 
 function determineSpeed () {
-  baseSpeed = 200 - (level * 10)
-  alienBombSpeed = 1000 - (level * 50)
-  mothershipSpeed = 15000 - (level * 700)
+  baseSpeed -= (level * 10)
+  alienBombSpeed -= (level * 50)
+  mothershipSpeed -= (level * 700)
 }
 
 // Alien Movement
@@ -312,6 +321,7 @@ function moveRight () {
 
 function shooting (e) {
   e.preventDefault()
+  console.log(e.code)
   if (levelScreen) {
     return
   }
@@ -319,7 +329,7 @@ function shooting (e) {
     gamePlay()
     return
   }
-  if (e.code === 'KeyS' ) {
+  if (e.code === 'Space' ) {
     shoot()
     if (sfxOn){
       sfxAudio.play()
@@ -374,6 +384,10 @@ function laserMovement () {
 // Game start and end functions 
 
 function gameOver () {
+  level = 1
+  baseSpeed = 300
+  alienBombSpeed = 1000
+  mothershipSpeed = 15000 
   isPlaying = false
   levelScreen = true
   clearInterval(gameTimer)
@@ -383,7 +397,6 @@ function gameOver () {
   clearInterval(mothershipGenerationId)
   clearInterval(laserMovementId)
   gameOverSplash.style.display = 'flex'
-  level = 1
   finalScoreSpan.innerHTML = score
 }
 
@@ -417,13 +430,13 @@ function gamePlay () {
 
 function checkHit() {
   laserPosition.forEach(laser => {
+    const laserToRemove = laserPosition.indexOf(laser)
     if (cells[laser].classList.contains('aliens')) {
-      cells[laser].classList.remove('laser', 'aliens')
-
-      const deadAlien = alienPositions.indexOf(laser)
-      alienPositions.splice(deadAlien, 1)
       
-      const laserToRemove = laserPosition.indexOf(laser)
+      cells[laser].classList.remove('laser', 'aliens')
+      const deadAlien = alienPositions.indexOf(laser)
+
+      alienPositions.splice(deadAlien, 1)
       laserPosition.splice(laserToRemove, 1) 
 
       score += 100
@@ -435,10 +448,13 @@ function checkHit() {
       }, 200)
 
     } else if (cells[laser].classList.contains('barrier')) {
-      const laserToRemove = laserPosition.indexOf(laser)
       laserPosition.splice(laserToRemove, 1)  
       cells[laser].classList.remove('laser')
 
+    } else if (cells[laser].classList.contains('shield')) {
+      laserPosition.splice(laserToRemove, 1)  
+      cells[laser].classList.remove('laser', 'shield')
+      
     } else if (cells[laser].classList.contains('mothership')) {
       cells[laser].classList.remove('laser', 'mothership')
       clearInterval(mothershipId)
@@ -449,7 +465,6 @@ function checkHit() {
         cells[laser].classList.remove('exploded') 
       }, 700)
       
-      const laserToRemove = laserPosition.indexOf(laser)
       laserPosition.splice(laserToRemove, 1) 
 
       score += 2000
@@ -475,6 +490,12 @@ function checkBombHit() {
 
       playerLives -= 1
       livesLeft.innerHTML = playerLives
+
+    } else if (cells[bomb].classList.contains('shield')) {
+     
+      const bombToRemove = bombPosition.indexOf(bomb)
+      bombPosition.splice(bombToRemove, 1)  
+      cells[bomb].classList.remove('bomb', 'shield')  
 
     } else if (cells[bomb].classList.contains('barrier-bottom')) {
 
@@ -596,6 +617,7 @@ function newHiScore () {
 // Functions to run at start up
 createGrid()
 generatePLayer()
+generateShields()
 generateFirstAliens()
 generateSecondAliens()
 generateThirdAliens()
@@ -654,7 +676,8 @@ function cheatCodes(e) {
     livesLeft.innerHTML = playerLives
   }
   if ((keys.join('').includes(ruinEverything))) {
-    baseSpeed = 25
+    level = 50
+    determineSpeed()
   }
 }
 
