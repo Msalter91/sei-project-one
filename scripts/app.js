@@ -96,6 +96,7 @@ function clearBoard() {
   })
   alienPositions = []
   laserPosition = []
+  bombPosition = []
   startBtn.style.visibility = 'visible'
   countLeft = 0
   countRight = 0
