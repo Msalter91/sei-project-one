@@ -3,7 +3,7 @@
 ## Overview
 
 This is the first project I made as part of my General Assembly Software Engineering Immersive Course. 
-The brief was simple; using only vanilla Javascript, HTML and CSS, create a grid-based Space Invaders game. 
+The brief was simple; using only vanilla Javascript, HTML and CSS, create a grid-based Space Invaders game in one week. 
 The point of the game was to use array manipulation to create movement and a playable, enjoyable game . 
 
 ## Built with
