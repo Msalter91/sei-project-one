@@ -19,6 +19,8 @@ The point of the game was to use array manipulation to create movement and a pla
 ## Deployed Version
 
 [Play the deployed version of this game](https://msalter91.github.io/sei-project-one/)
+[Finished Space Invaders Game]()
+
 
 ## Key Features
 
@@ -43,30 +45,28 @@ Bonus features that I added to the game (all detailed below)
 
 The idea behind the theme is the very task itself. 
 
-Going into my GA course, I had no programming experience. A good friend of mine introduced me to the concept of 'rubber duck debugging'. Talking to an inanimate quacker helped me work through a lot of early code bugs. So, armed only with my trusty yellow, semi-aquatic companion, I rode into battle against my own code. Slaying bugs one by one and completing the challenge. Instead of lasers, the player fires sunglass-clad rubber ducks, and must defeat hordes of Javascript aliens which drop bugs towards the players. 
+Going into my GA course, I had no programming experience. A good friend of mine introduced me to the concept of 'rubber duck debugging'. Talking to an inanimate quacker helped me work through a lot of early code bugs. So, armed only with my trusty yellow, semi-aquatic companion, I rode into battle against my own code. Slaying bugs one by one and completing the challenge. Instead of lasers, the player fires sunglass-clad rubber ducks, and must defeat hordes of Javascript aliens which drop bugs towards the players.
 
-## Game Objects
+### The board
 
-### The board 
-
-The board is a 20x20 grid make using a for loop. Once the base grid was created. Barriers were added to the top and bottom to make collision detection easier for the boundaries. 
+At the start, the board was a 20x20 grid made using a for loop. After testing, I realised that the top and bottom of the grid needed a barrier class added to facilitate collision detection. 
 
 ![Javascript-code](/assets/readme_images/grid-generation.png?raw=true)
 
 ### The Aliens  
 The far left cells on rows 2 to 4 are given a class of 'alien' which gives them their image.
-Three rows are generated independently on the top left hand side of the grid. I decided to generate the rows individually because this could allow for an 'easy mode' later on where less rows of aliens are generated in earlier levels. 
-
-### The Mothership 
-The mothership (represented by a friendly little Haskell logo) is generated independently. The function generates the mothership after 15 seconds in level one and then a little bit quicker every subsequent level. 
+Three rows are generated independently on the top left hand side of the grid. I decided to generate the rows individually because this could allow for greater customisation later on. 
 
 ### The Player
 The middle of the bottom row is given the class of player which has a background of a panicking Fry from Futurama - my spirit animal during many of my debugging attempts. 
 
-### The Shields 
+### BONUS The Shields 
 The shields positions are hard-coded into an array and once the board is generate the shields are placed into the cells that match their values. 
 
 The shields are the part that I would like to continue working on the most - they disappear when hit by either lasers or bombs, but it would be nice to add an effect where they disappear gradually over time, or can take multiple hits. 
+
+### BONUS The Mothership 
+The mothership (represented by a friendly little Haskell logo) is generated independently. The function generates the mothership after 15 seconds in level one and then a little bit quicker every subsequent level. 
 
 ## Movement 
 
@@ -133,9 +133,9 @@ The user is also able to generate high-scores. These are stored in the local sto
 ![JavaScript code](/assets/readme_images/hi-score.png?raw=true)
 
 
-## Challenges Encountered
+## Blocks Encountered
 <ul>
-  <li>Default key behaviours affecting other functions</li>
+  <li>Default keyboard key behaviours affecting other functions</li>
     <li>Managing collision detection</li>
 </ul>
 
@@ -144,6 +144,17 @@ The user is also able to generate high-scores. These are stored in the local sto
   <li>Cemented JavaScript knowledge in some key areas and challenged myself with new learning</li>
   <li>A fun theme and design</li>
   <li>Gave the game some novel features</li>
+</ul>
+
+## Known Bugs
+<ul>
+  <li>Lasers can sometimes miss their collisions with the top barrier</li>
+</ul>
+
+
+<ul>
+  <li>Responsive design</li>
+  <li>Separate the aliens into rows with different images and scores</li>
 </ul>
 
 ## Future Improvements 
